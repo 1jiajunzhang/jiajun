@@ -2,16 +2,14 @@ import streamlit as st
 from datetime import date
 import json
 
-# 用户数据存储文件
+# User data file
 USER_DATA_FILE = "user_data.json"
 
-
-# 加载用户数据
+# Load user data
 def load_users():
     try:
         with open(USER_DATA_FILE, "r") as file:
             users = json.load(file)
-            # 将 start_date 从字符串转换为 date 类型
             for user in users:
                 if "start_date" in users[user] and users[user]["start_date"]:
                     users[user]["start_date"] = date.fromisoformat(users[user]["start_date"])
@@ -19,7 +17,7 @@ def load_users():
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
-# 保存用户数据
+# Save user data
 def save_users(users):
     with open(USER_DATA_FILE, "w") as file:
         users_serializable = {
@@ -28,47 +26,47 @@ def save_users(users):
         }
         json.dump(users_serializable, file, indent=4)
 
-# 初始化用户数据库
+# Initialize user database
 users = load_users()
 
-# 用户登录功能
+# Login function
 def login():
-    st.title("login")
-    username = st.text_input("用户名", key="login_username")
-    password = st.text_input("密码", type="password", key="login_password")
+    st.title("Login")
+    username = st.text_input("Username", key="login_username")
+    password = st.text_input("Password", type="password", key="login_password")
     
-    if st.button("login"):
+    if st.button("Login"):
         if username in users and users[username]["password"] == password:
             st.session_state.logged_in = True
             st.session_state.user_data = users[username]
-            st.success("登录成功！")
+            st.success("Login successful!")
             st.rerun()
         else:
-            st.error("用户名或密码错误。")
+            st.error("Incorrect username or password.")
 
-# 用户注册功能
+# Registration function
 def register():
-    st.title("用户注册")
+    st.title("User Registration")
     
-    username = st.text_input("用户名", key="reg_username")
-    password = st.text_input("密码", type="password", key="reg_password")
-    role = st.selectbox("角色", ["Doctor", "Patient"], key="reg_role")
+    username = st.text_input("Username", key="reg_username")
+    password = st.text_input("Password", type="password", key="reg_password")
+    role = st.selectbox("Role", ["Doctor", "Patient"], key="reg_role")
     
     if role == "Patient":
-        doctor_id = st.text_input("医生ID", key="reg_doctor_id")
-        injury_type = st.selectbox("伤情类型", ["肩袖撕裂", "冻结肩（粘连性肩关节囊炎）", "肩关节脱位"], key="reg_injury_type")
-        age = st.number_input("年龄", min_value=10, max_value=100, key="reg_age")
-        gender = st.selectbox("性别", ["男", "女", "其他"], key="reg_gender")
-        start_date = st.date_input("康复开始日期", value=date.today(), key="reg_start_date")
+        doctor_id = st.text_input("Doctor ID", key="reg_doctor_id")
+        injury_type = st.selectbox("Injury Type", ["Rotator Cuff Tear", "Frozen Shoulder", "Dislocation"], key="reg_injury_type")
+        age = st.number_input("Age", min_value=10, max_value=100, key="reg_age")
+        gender = st.selectbox("Gender", ["Male", "Female", "Other"], key="reg_gender")
+        start_date = st.date_input("Rehabilitation Start Date", value=date.today(), key="reg_start_date")
     else:
-        doctor_id = st.text_input("医生ID", key="reg_doctor_id")
+        doctor_id = st.text_input("Doctor ID", key="reg_doctor_id")
     
-    if st.button("注册"):
+    if st.button("Register"):
         if username and password and username not in users:
             if role == "Patient":
                 valid_doctor = any(user for user in users if users[user]["role"] == "Doctor" and users[user]["doctor_id"] == doctor_id)
                 if not valid_doctor:
-                    st.error("未找到该医生ID，请输入有效的医生ID。")
+                    st.error("Doctor ID not found. Please enter a valid Doctor ID.")
                     return
                 users[username] = {
                     "password": password,
@@ -92,80 +90,64 @@ def register():
                     "patients": []
                 }
             save_users(users)
-            st.success("注册成功！现在可以登录。")
+            st.success("Registration successful! You can now log in.")
         elif username in users:
-            st.error("用户名已存在，请选择其他用户名。")
+            st.error("Username already exists. Please choose a different one.")
         else:
-            st.error("请填写所有字段。")
+            st.error("Please fill in all fields.")
 
-# 登出功能
+# Logout function
 def logout():
-    st.title("User Logout")  # Display title for logout page
+    st.title("User Logout")
     
-    # Logout button functionality
     if st.button("Log out"):
-        st.session_state.logged_in = False  # Reset login state
-        st.session_state.user_data = None  # Clear user data
-        st.success("Logged out successfully.")  # Display success message
-        st.rerun()  # Refresh the page after logout
-        #st.switch_page("main.py") 
-        
-login_page = st.Page(login, title="Log in", icon=":material/login:")  # Login page
-logout_page = st.Page(logout, title="Log out", icon=":material/logout:")  # Logout page
+        st.session_state.logged_in = False
+        st.session_state.user_data = None
+        st.success("Logged out successfully.")
+        st.rerun()
 
-# Reports section
-#dashboard = st.Page("reports/dashboard.py", title="Dashboard", icon=":material/dashboard:", default=True)  # Main dashboard page
-#bugs = st.Page("reports/bugs.py", title="Bug reports", icon=":material/bug_report:")  # Bug reporting page
-#alerts = st.Page("reports/alerts.py", title="System alerts", icon=":material/notification_important:")  # System alerts page
+# Page objects (for navigation compatibility if needed)
+login_page = st.Page(login, title="Log in", icon=":material/login:")
+logout_page = st.Page(logout, title="Log out", icon=":material/logout:")
+instruction = st.Page("tools/instruction.py", title="Instruction", icon=":material/search:")
 
-# Tools section
-instruction = st.Page("tools/instruction.py", title="Instruction", icon=":material/search:")  # Search tool page
-
-# 初始化登录状态
+# Initialize login state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.user_data = None
 
-# 登录后的主界面
+# Main interface after login
 if st.session_state.logged_in:
-    #st.sidebar.title("导航")
-    
-    # 医生页面
     if st.session_state.user_data["role"] == "Doctor":
         if "patients" in st.session_state.user_data:
-            st.sidebar.title("您的患者-信息")
-            selected_patient = st.sidebar.radio("选择患者", st.session_state.user_data["patients"])
+            st.sidebar.title("Your Patients - Info")
+            selected_patient = st.sidebar.radio("Select a patient", st.session_state.user_data["patients"])
             if selected_patient in users:
                 patient_data = users[selected_patient]
-                st.write(f"### 患者：{selected_patient}")
-                st.write(f"**伤情类型：** {patient_data['injury_type']}")
-                st.write(f"**年龄：** {patient_data['age']}")
-                st.write(f"**性别：** {patient_data['gender']}")
-                st.write(f"**康复开始日期：** {patient_data['start_date']}")
+                st.write(f"### Patient: {selected_patient}")
+                st.write(f"**Injury Type:** {patient_data['injury_type']}")
+                st.write(f"**Age:** {patient_data['age']}")
+                st.write(f"**Gender:** {patient_data['gender']}")
+                st.write(f"**Rehabilitation Start Date:** {patient_data['start_date']}")
                 
-        st.sidebar.title("您的患者-训练进程")
-        page = st.sidebar.radio("前往页面", ["登出"])
-        if page == "登出":
+        st.sidebar.title("Your Patients - Progress")
+        page = st.sidebar.radio("Go to", ["Log out"])
+        if page == "Log out":
             logout()
     
-    # 患者页面
     elif st.session_state.user_data["role"] == "Patient":
         page = st.navigation(
             {
-                "Account": [logout_page],  # Account section with logout option
-                #"Reports": [dashboard, bugs, alerts],  # Reports section
-                "Tools": [instruction],  # Tools section
+                "Account": [logout_page],
+                "Tools": [instruction],
             }
-            )
+        )
         page.run()
 
-
-# 未登录状态：显示登录或注册界面
+# Interface before login
 else:
-    option = st.radio("请选择操作", ["login", "注册"])
-    if option == "login":
+    option = st.radio("Please choose an action", ["Login", "Register"])
+    if option == "Login":
         login()
     else:
         register()
-        
-
