@@ -1,0 +1,76 @@
+{
+    "Doctor.JZ": {
+        "password": "981225",
+        "role": "Doctor",
+        "doctor_id": "873402557",
+        "patients": [
+            "jiajun",
+            "jiajun1"
+        ],
+        "start_date": null
+    },
+    "jiajun": {
+        "password": "981225",
+        "role": "Patient",
+        "doctor_id": "873402557",
+        "injury_type": "Rotator Cuff Tear",
+        "age": 10,
+        "gender": "Male",
+        "start_date": "2025-03-13"
+    },
+    "jiajun1": {
+        "password": "981225",
+        "role": "Patient",
+        "doctor_id": "873402557",
+        "injury_type": "Frozen Shoulder (Adhesive Capsulitis)",
+        "age": 11,
+        "gender": "Female",
+        "start_date": "2025-03-12"
+    },
+    "Doctor.K": {
+        "password": "981225",
+        "role": "Doctor",
+        "doctor_id": "873402558",
+        "patients": [
+            "Goran",
+            "jiajun123"
+        ],
+        "start_date": null
+    },
+    "Goran": {
+        "password": "981225",
+        "role": "Patient",
+        "doctor_id": "873402558",
+        "injury_type": "Rotator Cuff Tear",
+        "age": 27,
+        "gender": "Male",
+        "start_date": "2025-03-13"
+    },
+    "jiajun123": {
+        "password": "981225",
+        "role": "Patient",
+        "doctor_id": "873402558",
+        "injury_type": "Frozen Shoulder (Adhesive Capsulitis)",
+        "age": 26,
+        "gender": "Male",
+        "start_date": "2025-03-13"
+    },
+    "jiajun.D": {
+        "password": "981225",
+        "role": "Doctor",
+        "doctor_id": "873402559",
+        "patients": [
+            "jj"
+        ],
+        "start_date": null
+    },
+    "jj": {
+        "password": "981225",
+        "role": "Patient",
+        "doctor_id": "873402559",
+        "injury_type": "Frozen Shoulder (Adhesive Capsulitis)",
+        "age": 10,
+        "gender": "Male",
+        "start_date": "2025-03-15"
+    }
+}
