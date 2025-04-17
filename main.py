@@ -110,6 +110,7 @@ def logout():
 login_page = st.Page(login, title="Log in", icon=":material/login:")
 logout_page = st.Page(logout, title="Log out", icon=":material/logout:")
 instruction = st.Page("tools/instruction.py", title="Instruction", icon=":material/search:")
+compare = st.Page("tools/test.py", title="compare", icon=":material/search:")
 
 # Initialize login state
 if "logged_in" not in st.session_state:
@@ -139,7 +140,7 @@ if st.session_state.logged_in:
         page = st.navigation(
             {
                 "Account": [logout_page],
-                "Tools": [instruction],
+                "Tools": [instruction,compare],
             }
         )
         page.run()
