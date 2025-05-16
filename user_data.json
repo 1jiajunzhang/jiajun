@@ -12,7 +12,7 @@
     "jiajun": {
         "password": "981225",
         "role": "Patient",
-        "doctor_id": "873402557",
+        "doctor_id": "873402558",
         "injury_type": "Rotator Cuff Tear",
         "age": 10,
         "gender": "Male",
@@ -33,7 +33,7 @@
         "doctor_id": "873402558",
         "patients": [
             "Goran",
-            "jiajun123"
+            "jiajun"
         ],
         "start_date": null
     },
